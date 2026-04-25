@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxia del Amor</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  height: 100vh;
+  background: radial-gradient(circle at center, #ff3b00 0%, #8b0000 28%, #120000 58%, #000 100%);
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+.galaxy {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Corazón central */
+.center-heart {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 200px;
+  transform: translate(-50%, -50%);
+  z-index: 8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: pulse 2.3s infinite ease-in-out;
+}
+
+.center-heart::before,
+.center-heart::after {
+  content: "";
+  position: absolute;
+  width: 110px;
+  height: 180px;
+  background: radial-gradient(circle, #ff1744, #8b0000);
+  border-radius: 110px 110px 0 0;
+  box-shadow: 0 0 30px #ff003c, 0 0 70px #ff003c;
+}
+
+.center-heart::before {
+  left: 110px;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.center-heart::after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+.heart-text {
+  position: relative;
+  z-index: 10;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 10px #fff, 0 0 25px #ff4da6;
+}
+
+@keyframes pulse {
+  0%,100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.08); }
+}
+
+/* Palabras */
+.word {
+  position: absolute;
+  white-space: nowrap;
+  font-weight: bold;
+  color: #ffd6e8;
+  text-shadow:
+    0 0 6px #fff,
+    0 0 14px #ff4da6,
+    0 0 25px #ff0040;
+  z-index: 30;
+  animation: floatWord linear infinite;
+}
+
+/* Animación COMPATIBLE CELULAR */
+@keyframes floatWord {
+  0% {
+    transform: translate(var(--x1), var(--y1)) scale(0.6);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  50% {
+    transform: translate(var(--xMid), var(--yMid)) scale(1.4);
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--x2), var(--y2)) scale(0.6);
+    opacity: 0;
+  }
+}
+
+/* Corazones */
+.heart {
+  position: absolute;
+  font-size: 30px;
+  animation: heartFloat 4s linear forwards;
+  z-index: 40;
+}
+
+@keyframes heartFloat {
+  to {
+    transform: translateY(-180px);
+    opacity: 0;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffd6e8;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="galaxy" id="galaxy">
+
+  <div class="center-heart">
+    <div class="heart-text">Te Amo<br>Vale</div>
+  </div>
+
+  <div class="footer">Toca la pantalla ❤️</div>
+
+</div>
+
+<script>
+const galaxy = document.getElementById("galaxy");
+
+const words = [
+  "❤️ Te amo","🌸 Mi flor","✨ Brillas","🌙 Mi cielo","💖 Vale",
+  "💍 Mi vida","🥰 Mi amor","🌹 Dulzura","🔥 Mi razón","🦋 Siempre tú",
+  "🌈 Alegría","💫 Mi universo","💌 Cariño","🌻 Mi luz","🫶 Mi calma",
+  "💞 Eternidad","🌅 Amanecer","🎶 Mi canción","💗 Mi ternura",
+  "⭐ Mi destino","🌷 Mi reina","💓 Contigo","🧸 Mi felicidad",
+  "🌺 Mi inspiración","💎 Mi tesoro","🌠 Mi sueño","💫 Mi futuro",
+  "🌹 Mi ahora","👑 Mi compañera","💞 Amor eterno","👸 Reina"
+];
+
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function createWord() {
+  const word = document.createElement("div");
+  word.className = "word";
+  word.textContent = words[Math.floor(Math.random() * words.length)];
+
+  const startX = random(-100, window.innerWidth + 100);
+  const startY = random(-50, window.innerHeight + 50);
+
+  const midX = window.innerWidth / 2 + random(-120, 120);
+  const midY = window.innerHeight / 2 + random(-100, 100);
+
+  const endX = random(-100, window.innerWidth + 100);
+  const endY = random(-50, window.innerHeight + 50);
+
+  word.style.left = "0px";
+  word.style.top = "0px";
+
+  word.style.setProperty("--x1", startX + "px");
+  word.style.setProperty("--y1", startY + "px");
+  word.style.setProperty("--xMid", midX + "px");
+  word.style.setProperty("--yMid", midY + "px");
+  word.style.setProperty("--x2", endX + "px");
+  word.style.setProperty("--y2", endY + "px");
+
+  word.style.animationDuration = random(6, 10) + "s";
+
+  galaxy.appendChild(word);
+
+  setTimeout(() => word.remove(), 10000);
+}
+
+function createHeart(x, y) {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤️";
+  heart.style.left = x + "px";
+  heart.style.top = y + "px";
+
+  galaxy.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 4000);
+}
+
+/* Cargar palabras iniciales */
+for (let i = 0; i < 8; i++) {
+  createWord();
+}
+
+/* Flujo constante (optimizado móvil) */
+setInterval(createWord, 500);
+
+/* Interacción */
+document.addEventListener("click", e => {
+  createHeart(e.clientX, e.clientY);
+});
+
+document.addEventListener("touchstart", e => {
+  const t = e.touches[0];
+  createHeart(t.clientX, t.clientY);
+});
+</script>
+
+</body>
+</html>
